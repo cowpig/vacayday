@@ -1,0 +1,21 @@
+services:
+  app:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+      - ~/.bashrc:/root/.bashrc
+    environment:
+      - FLASK_ENV=development
+      - FLASK_APP=src/app.py
+      - PYTHONPATH=/app
+      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY}
+    command: flask run --host=0.0.0.0
+  test:
+    build: .
+    volumes:
+      - .:/app
+    env_file:
+      - .env
+    command: pytest -v
